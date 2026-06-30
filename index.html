@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>☬SHΞN™ V2Ray Sub Builder | Advanced Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --card: #15171e;
+            --panel: rgba(21, 23, 30, 0.65);
+            --border: rgba(201, 162, 39, 0.25);
+            --border-glow: rgba(201, 162, 39, 0.5);
+            --text: #e0e0e0;
+            --muted: #8b8e98;
+            --accent: #c9a227;
+            --accent2: #d4af37;
+            --accent-glow: rgba(201, 162, 39, 0.4);
+            
+            --good: #4ade80;
+            --good-glow: rgba(74, 222, 128, 0.3);
+            --warn: #fbbf24;
+            --warn-glow: rgba(251, 191, 36, 0.3);
+            --bad: #f87171;
+            --bad-glow: rgba(248, 113, 113, 0.3);
+            --info: #38bdf8;
+            --info-glow: rgba(56, 189, 248, 0.3);
+            
+            --mono: 'JetBrains Mono', ui-monospace, monospace;
+            --sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+            --radius: 28px;
+            --shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        html, body {
+            height: 100%;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Animated Grid Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                linear-gradient(rgba(201, 162, 39, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 162, 39, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+            z-index: 0;
+            pointer-events: none;
+            transform: perspective(500px) rotateX(60deg) scale(2.5) translateY(-100px);
+            animation: gridMove 20s linear infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) scale(2.5) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) scale(2.5) translateY(40px); }
+        }
+
+        /* Ambient Glow */
+        .ambient {
+            position: fixed;
+            top: -20%; left: -10%;
+            width: 50vw; height: 50vw;
+            background: radial-gradient(circle, rgba(201,162,39,0.08) 0%, rgba(0,0,0,0) 70%);
+            z-index: 0; pointer-events: none;
+            filter: blur(80px);
+        }
+
+        header {
+            position: relative; z-index: 2;
+            text-align: center;
+            padding: 40px 20px 20px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(180deg, #ffffff 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px var(--accent-glow);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.4em;
+            color: var(--accent2);
+            text-transform: uppercase;
+            text-shadow: 0 0 15px var(--accent-glow);
+            opacity: 0.9;
+        }
+
+        main {
+            position: relative; z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            gap: 32px;
+            grid-template-columns: 1fr;
+            animation: fadeIn 1s ease-out 0.2s both;
+        }
+
+        @media (min-width: 1024px) {
+            main { grid-template-columns: 1fr 1.1fr; }
+        }
+
+        /* Glassmorphism Panels */
+        .panel {
+            background: var(--panel);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .panel:hover {
+            border-color: var(--border-glow);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(201, 162, 39, 0.1);
+        }
+
+        .panel-header {
+            padding: 20px 28px;
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--text);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .status-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(201, 162, 39, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(201, 162, 39, 0); }
+        }
+
+        .panel-body { padding: 28px; display: flex; flex-direction: column; gap: 24px; flex-grow: 1; }
+
+        /* Inputs */
+        .input-group { display: flex; flex-direction: column; gap: 10px; position: relative; }
+        .input-label {
+            font-size: 13px; font-weight: 700; color: var(--muted);
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+
+        textarea, input[type="text"], input[type="number"] {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px 22px;
+            color: var(--text);
+            font-family: var(--mono);
+            font-size: 14px;
+            line-height: 1.6;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        textarea { min-height: 140px; resize: vertical; padding-right: 60px; }
+
+        textarea::placeholder, input::placeholder {
+            color: rgba(224, 224, 224, 0.3);
+            font-family: var(--sans);
+        }
+
+        textarea:focus, input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 0 4px rgba(201, 162, 39, 0.15), inset 0 0 20px rgba(0,0,0,0.6);
+        }
+        
+        .attach-btn {
+            position: absolute;
+            right: 14px;
+            bottom: 14px;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0, 0, 0, 0.55);
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        .attach-btn:hover {
+            border-color: var(--accent);
+            background: rgba(201, 162, 39, 0.12);
+            transform: scale(1.05);
+        }
+        .attach-btn svg { width: 22px; height: 22px; }
+
+        .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+
+        /* Checkboxes Toggle Style */
+        .check-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+        
+        .check-box {
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 16px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+            text-align: center;
+        }
+        .check-box:has(input:checked) {
+            background: rgba(201, 162, 39, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(201, 162, 39, 0.2);
+        }
+        .check-box input { display: none; }
+        .check-box span { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--muted); transition: color 0.2s; }
+        .check-box:has(input:checked) span { color: var(--accent); }
+
+
+        /* Primary Button */
+        .btn-primary {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            padding: 20px;
+            border-radius: 18px;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(201, 162, 39, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            position: relative; overflow: hidden;
+            font-family: var(--sans);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: rgba(201, 162, 39, 0.1);
+            box-shadow: 0 0 25px rgba(201, 162, 39, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            background: rgba(0, 0, 0, 0.4); color: #555;
+            border-color: #333;
+            box-shadow: none; cursor: not-allowed; transform: none;
+        }
+
+        .btn-secondary {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 16px;
+            border-radius: 16px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(201, 162, 39, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        
+        .btn-secondary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Terminal Monitor */
+        .terminal-panel {
+            background: #050608;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            display: flex; flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+            height: 450px;
+        }
+
+        .terminal-panel::after {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none; z-index: 10;
+        }
+
+        .term-header {
+            background: rgba(20, 22, 28, 0.9);
+            padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative; z-index: 11;
+        }
+
+        .term-mac-buttons { display: flex; gap: 8px; }
+        .term-mac-buttons div { width: 12px; height: 12px; border-radius: 50%; }
+        .t-red { background: #ff5f56; box-shadow: 0 0 8px rgba(255,95,86,0.5); }
+        .t-yel { background: #ffbd2e; box-shadow: 0 0 8px rgba(255,189,46,0.5); }
+        .t-grn { background: #27c93f; box-shadow: 0 0 8px rgba(39,201,63,0.5); }
+
+        .term-title {
+            font-family: var(--mono); font-size: 12px; font-weight: 700;
+            color: var(--muted); letter-spacing: 0.1em;
+        }
+
+        .term-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex-grow: 1;
+            font-family: var(--mono);
+            font-size: 13px;
+            line-height: 1.6;
+            position: relative;
+            z-index: 11;
+            height: 100%;
+        }
+        
+        .term-body::-webkit-scrollbar { width: 6px; }
+        .term-body::-webkit-scrollbar-track { background: rgba(0,0,0,0.5); }
+        .term-body::-webkit-scrollbar-thumb { background: rgba(201, 162, 39, 0.4); border-radius: 10px; }
+        .term-body::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        .log-line {
+            display: flex; align-items: flex-start; gap: 12px;
+            margin-bottom: 8px;
+            opacity: 0;
+            transform: translateX(-15px);
+            animation: slideInLog 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            word-break: break-all;
+        }
+
+        @keyframes slideInLog {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .log-time { color: #5c6370; font-size: 11px; flex-shrink: 0; margin-top: 2px; }
+        .log-badge {
+            font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 6px;
+            text-transform: uppercase; letter-spacing: 0.05em; flex-shrink: 0;
+            min-width: 65px; text-align: center;
+        }
+        
+        .badge-info { background: rgba(56, 189, 248, 0.15); color: var(--info); border: 1px solid var(--info-glow); }
+        .badge-scan { background: rgba(201, 162, 39, 0.15); color: var(--accent); border: 1px solid var(--accent-glow); }
+        .badge-ok { background: rgba(74, 222, 128, 0.15); color: var(--good); border: 1px solid var(--good-glow); }
+        .badge-err { background: rgba(248, 113, 113, 0.15); color: var(--bad); border: 1px solid var(--bad-glow); }
+
+        .log-msg { color: #abb2bf; }
+        .log-highlight { color: #e5c07b; font-weight: 700; }
+
+        /* Scanning Progress */
+        .scan-progress {
+            height: 3px; background: rgba(0,0,0,0.5);
+            width: 100%; position: relative; z-index: 11;
+            overflow: hidden;
+        }
+        .scan-bar {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, transparent, var(--accent2), var(--accent));
+            box-shadow: 0 0 10px var(--accent);
+            transition: width 0.2s ease;
+        }
+
+        /* Results Display */
+        .results-box {
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .score-display {
+            font-size: 72px;
+            font-weight: 900;
+            font-family: var(--mono);
+            background: linear-gradient(180deg, var(--accent2) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 15px 40px var(--accent-glow);
+            line-height: 1;
+            margin-bottom: 20px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .score-display.bump { transform: scale(1.15); }
+
+        footer {
+            text-align: center;
+            padding: 50px 20px 40px;
+            position: relative; z-index: 2;
+        }
+
+        .footer {
+            display: inline-block;
+            color: var(--accent);
+            text-decoration: none;
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            padding: 12px 30px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .footer:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media (max-width: 768px) {
+            .panel-body { padding: 20px; }
+            .score-display { font-size: 56px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient"></div>
+
+    <header>
+        <h1>☬SHΞN™ SPLITTΞR</h1>
+        <div class="subtitle">Advanced Unique V2Ray Miner </div>
+    </header>
+
+    <main>
+        <!-- Configurator Panel -->
+        <section class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <div class="status-dot"></div>
+                    System Configuration
+                </div>
+            </div>
+            
+            <div class="panel-body">
+                <div class="input-group">
+                    <label class="input-label">Config/Raw (Leave empty for default pool)</label>
+                    <textarea id="mainInput" placeholder="Paste subscription links (http/https) or raw base64/URI configs here..."></textarea>
+                    <button class="attach-btn" type="button" title="Attach file" onclick="document.getElementById('fileInput').click()">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <defs>
+                                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#d4af37"/>
+                                    <stop offset="100%" stop-color="#c9a227"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M21 11.5l-8.6 8.6a6 6 0 01-8.5-8.5l9.2-9.2a4 4 0 015.7 5.7l-9.3 9.3a2 2 0 01-2.8-2.8l8.6-8.6" stroke="url(#goldGradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <input id="fileInput" type="file" style="display: none;" accept=".txt,.conf,.json">
+                </div>
+
+                <div class="row">
+                    <div class="input-group">
+                        <label class="input-label">Remark</label>
+                        <input id="remarkInput" type="text" value="☬SHΞN™🪽">
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label">Max Output</label>
+                        <input id="maxOutput" type="number" min="10" max="20000" value="2000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Allowed Protocols</label>
+                    <div class="check-grid" id="protocolGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Allowed Transports</label>
+                    <div class="check-grid" id="transportGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <button id="processBtn" class="btn-primary" onclick="startEngine()">
+                    START
+                </button>
+            </div>
+        </section>
+
+        <!-- Monitor Panel -->
+        <section class="panel">
+            <div class="panel-header" style="border-bottom: none;">
+                <div class="panel-title">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                    Live Terminal Monitor
+                </div>
+                <div class="btn-secondary" style="padding: 6px 12px; font-size: 11px; border-radius: 8px; border:none;" onclick="clearTerminal()">CLEAR</div>
+            </div>
+
+            <div class="panel-body" style="padding: 0;">
+                <div class="terminal-panel">
+                    <div class="term-header">
+                        <div class="term-mac-buttons">
+                            <div class="t-red"></div><div class="t-yel"></div><div class="t-grn"></div>
+                        </div>
+                        <div class="term-title" id="termStatus">AWAITING COMMAND</div>
+                        <div></div>
+                    </div>
+                    <div class="scan-progress"><div class="scan-bar" id="scanBar"></div></div>
+                    <div class="term-body" id="termBody">
+                        <!-- Logs inject here -->
+                    </div>
+                </div>
+
+                <div class="results-box">
+                    <div class="input-label" style="margin-bottom: 12px;">Valid Extracted Configs</div>
+                    <div class="score-display" id="finalCount">0</div>
+                    <div class="row">
+                        <button id="copyBtn" class="btn-secondary" onclick="copyConfigs()" disabled>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            COPY TO CLIPBOARD
+                        </button>
+                        <button id="dlBtn" class="btn-secondary" onclick="downloadConfigs()" disabled>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            DOWNLOAD .TXT
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <a class="footer" href="https://t.me/shervini" target="_blank" rel="noopener">Exclusive ☬SHΞN™ made</a>
+    </footer>
+
+    <script>
+        // --- Core Definitions ---
+        const PROTOCOLS = [
+            { id: "vless", checked: true },
+            { id: "vmess", checked: false },
+            { id: "hysteria2", checked: false },
+            { id: "trojan", checked: false },
+            { id: "ss", checked: false },
+            { id: "hysteria", checked: false }
+        ];
+        
+        const TRANSPORTS = [
+            { id: "ws", checked: true },
+            { id: "grpc", checked: true },
+            { id: "tcp", checked: true },
+            { id: "httpupgrade", checked: false },
+            { id: "splithttp", checked: false },
+            { id: "xhttp", checked: false },
+            { id: "h2", checked: false },
+            { id: "quic", checked: false }
+        ];
+        
+        const DEFAULT_SOURCES = [
+    "https://raw.githubusercontent.com/shervinofpersia/Config/refs/heads/main/ProxyNg.json",
+    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile.txt",
+    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/Vless-Reality-White-Lists-Rus-Mobile-2.txt",
+    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS_mobile.txt",
+    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-checked.txt",
+    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_VLESS_RUS.txt",
+    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/BLACK_SS+All_RUS.txt",
+    "https://raw.githubusercontent.com/Mosifree/-FREE2CONFIG/refs/heads/main/FRAGMENT",
+    "https://raw.githubusercontent.com/ShadowException/VPN/refs/heads/main/configs/VPN-cat",
+    "https://raw.githubusercontent.com/F0rc3Run/F0rc3Run/refs/heads/main/splitted-by-protocol/vless.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-config/refs/heads/main/Sub1.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-Config/refs/heads/main/Sub2.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-Config/refs/heads/main/Sub3.txt",
+    "https://raw.githubusercontent.com/ebrasha/free-v2ray-public-list/refs/heads/main/V2Ray-Config-By-EbraSha.txt",
+    "https://raw.githubusercontent.com/MohammadBahemmat/V2ray-Collector/refs/heads/main/subscriptions/all.txt",
+    "https://raw.githubusercontent.com/ALIILAPRO/v2rayNG-Config/refs/heads/main/sub.txt",
+    "https://raw.githubusercontent.com/Pawdroid/Free-servers/refs/heads/main/sub",
+    "https://raw.githubusercontent.com/mfuu/v2ray/refs/heads/main/v2ray.txt",
+    "https://raw.githubusercontent.com/ermaozi/get_subscribe/refs/heads/main/subscribe/v2ray.txt",
+    "https://empty-mouse-fbb7.alizareh4024.workers.dev/sync?sub=%D8%B3%D9%88%D8%B3%D9%85%D8%A7%D8%B1%F0%9F%A6%8E",
+    "https://raw.githubusercontent.com/pytimusprime/FreeV2ray/refs/heads/main/all_servers.txt",
+    "https://raw.githubusercontent.com/ThomasJasperthecat/sub/refs/heads/main/sublist1.txt",
+    "https://raw.githubusercontent.com/masir-sefid/Sub/refs/heads/main/@Masir_Sefid.txt",
+    "http://main.pythash.tr/FRkh99yBGCllN/01736620-2086-4c0b-a86e-52ebfe64dd12/#pythash",
+    "https://raw.githubusercontent.com/masir-sefid/Sub/refs/heads/main/Telegram-Channel-@Masir_Sefid.txt",
+    "https://c6et83fe1u99lr8j5w4s9iwik9565bqx.pages.dev/sub/fragment/g4lWgI*%40zehfoOEK?app=xray#%F0%9F%92%A6%20BPB%20Fragment",
+    "https://raw.githubusercontent.com/AmyraxVPN-Main/AmyraxVPN/refs/heads/main/AmyraxVPN.txt",
+    "https://raw.githubusercontent.com/MahsaNetConfigTopic/config/refs/heads/main/xray_final.txt",
+    "https://raw.githubusercontent.com/barry-far/V2ray-config/refs/heads/main/All_Configs_base64_Sub.txt",
+    "https://v2.alicivil.workers.dev"
+];
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderChecks('protocolGrid', PROTOCOLS, 'proto');
+            renderChecks('transportGrid', TRANSPORTS, 'net');
+            logTerm('SYSTEM INITIALIZED. READY FOR EXTRACTION.', 'info');
+        });
+
+        document.getElementById("fileInput").addEventListener("change", function(e) {
+            const f = e.target.files?.[0];
+            if (!f) return;
+            const r = new FileReader();
+            r.onload = () => {
+                const ta = document.getElementById("mainInput");
+                const content = r.result || "";
+                ta.value = (ta.value ? ta.value + "\n" : "") + content;
+                logTerm(`Attached file: ${f.name} (${(f.size/1024).toFixed(1)} KB)`, "ok");
+            };
+            r.readAsText(f);
+        });
+
+        function renderChecks(containerId, items, name) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = items.map(item => `
+                <label class="check-box">
+                    <input type="checkbox" name="${name}" value="${item.id}" ${item.checked ? 'checked' : ''}>
+                    <span>${item.id.toUpperCase()}</span>
+                </label>
+            `).join('');
+        }
+
+        // --- Terminal Logging System ---
+        const termBody = document.getElementById('termBody');
+        function logTerm(msg, type = 'info') {
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit', fractionalSecondDigits: 2 }).replace('.', ':');
+            
+            let badgeClass = 'badge-info';
+            let badgeText = 'INFO';
+            
+            if (type === 'scan') { badgeClass = 'badge-scan'; badgeText = 'SCAN'; }
+            else if (type === 'ok') { badgeClass = 'badge-ok'; badgeText = 'SUCCESS'; }
+            else if (type === 'err') { badgeClass = 'badge-err'; badgeText = 'ERROR'; }
+
+            // Highlight numbers and URLs
+            const formattedMsg = msg.replace(/(\d+)/g, '<span class="log-highlight">$1</span>')
+                                    .replace(/(https?:\/\/[^\s]+)/g, '<span style="color:#56b6c2; text-decoration:underline;">$1</span>');
+
+            const div = document.createElement('div');
+            div.className = 'log-line';
+            div.innerHTML = `
+                <div class="log-time">[${time}]</div>
+                <div class="log-badge ${badgeClass}">${badgeText}</div>
+                <div class="log-msg">${formattedMsg}</div>
+            `;
+            
+            termBody.appendChild(div);
+            termBody.scrollTop = termBody.scrollHeight;
+        }
+
+        function clearTerminal() {
+            termBody.innerHTML = '';
+            logTerm('Terminal cleared.', 'info');
+        }
+
+        function updateProgress(percent, statusText) {
+            document.getElementById('scanBar').style.width = `${percent}%`;
+            if (statusText) document.getElementById('termStatus').innerText = statusText;
+        }
+
+        // --- Utils & Extraction Logic ---
+        let finalProcessedConfigs = [];
+
+        async function fetchWithFallback(url) {
+            const proxies = ["https://api.allorigins.win/raw?url=", "https://corsproxy.io/?"];
+            
+            try {
+                const c = new AbortController();
+                const id = setTimeout(() => c.abort(), 4000);
+                const res = await fetch(url, { signal: c.signal, cache: 'no-store' });
+                clearTimeout(id);
+                if (res.ok) return await res.text();
+            } catch (e) {}
+
+            for (const proxy of proxies) {
+                try {
+                    const c = new AbortController();
+                    const id = setTimeout(() => c.abort(), 5000);
+                    const res = await fetch(proxy + encodeURIComponent(url), { signal: c.signal });
+                    clearTimeout(id);
+                    if (res.ok) return await res.text();
+                } catch (e) {}
+            }
+            throw new Error(`Failed to fetch: ${url}`);
+        }
+
+        function safeAtobUnicode(b64) {
+            const padded = b64 + "=".repeat((4 - (b64.length % 4)) % 4);
+            const bin = atob(padded.replace(/-/g, "+").replace(/_/g, "/"));
+            try {
+                return decodeURIComponent(Array.prototype.map.call(bin, c =>
+                    "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join(""));
+            } catch (_) { return bin; }
+        }
+
+        function safeBtoaUnicode(str) {
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+                function toSolidBytes(match, p1) {
+                    return String.fromCharCode('0x' + p1);
+            }));
+        }
+
+        function extractURIs(text) {
+            let combined = text;
+            const lines = text.split(/\r?\n/);
+            
+            for (let line of lines) {
+                let s = line.trim();
+                if (s.length > 50 && !s.includes('://') && /^[A-Za-z0-9+/=_-]+$/.test(s)) {
+                    try {
+                        const decoded = safeAtobUnicode(s);
+                        if (decoded.includes('://')) combined += '\n' + decoded;
+                    } catch (e) {}
+                }
+            }
+
+            const regex = /(vmess|vless|hysteria2|hy2|trojan|ss|hysteria):\/\/[^\s"'<>]+/gim;
+            const matches = combined.match(regex) || [];
+            return Array.from(new Set(matches.map(m => m.trim())));
+        }
+
+        function scoreConfig(uri) {
+            let score = 50;
+            const low = uri.toLowerCase();
+            let key = "";
+            let meta = { proto: '', net: 'tcp', port: 0 };
+
+            try {
+                if (low.startsWith('vmess://')) {
+                    const b64 = uri.slice(8);
+                    const jsonStr = safeAtobUnicode(b64);
+                    const json = JSON.parse(jsonStr);
+                    meta.proto = 'vmess';
+                    meta.net = (json.net || 'tcp').toLowerCase();
+                    meta.port = parseInt(json.port) || 0;
+                    key = `vmess|${json.add}|${meta.port}`;
+                    score += 10; 
+                    if (json.tls === 'tls') score += 15;
+                } else {
+                    const proto = low.split('://')[0];
+                    meta.proto = proto === 'hy2' ? 'hysteria2' : proto;
+                    
+                    const fakeUrl = new URL('http://' + uri.slice(proto.length + 3));
+                    meta.port = parseInt(fakeUrl.port) || 443;
+                    
+                    const params = new URLSearchParams(fakeUrl.search);
+                    meta.net = (params.get('type') || params.get('mode') || 'tcp').toLowerCase();
+                    const security = (params.get('security') || '').toLowerCase();
+
+                    key = `${meta.proto}|${fakeUrl.hostname}|${meta.port}`;
+
+                    if (meta.proto === 'vless') score += 25;
+                    if (meta.proto === 'hysteria2') score += 20;
+                    if (meta.proto === 'trojan') score += 15;
+
+                    if (security === 'reality') score += 30;
+                    else if (security === 'tls' || security === 'xtls') score += 20;
+
+                    if (['grpc', 'xhttp', 'splithttp', 'ws'].includes(meta.net)) score += 15;
+                }
+
+                if ([443, 8443, 2053, 2083].includes(meta.port)) score += 15;
+                
+                return { valid: true, meta, score, key };
+            } catch (e) {
+                return { valid: false };
+            }
+        }
+
+        function applyRemark(uri, remarkTag) {
+            try {
+                if (uri.toLowerCase().startsWith('vmess://')) {
+                    const b64 = uri.slice(8);
+                    const jsonStr = safeAtobUnicode(b64);
+                    const json = JSON.parse(jsonStr);
+                    json.ps = remarkTag;
+                    return 'vmess://' + safeBtoaUnicode(JSON.stringify(json));
+                } else {
+                    const base = uri.split('#')[0];
+                    return base + '#' + encodeURIComponent(remarkTag);
+                }
+            } catch (e) { return uri; }
+        }
+
+        // --- Main Engine ---
+        async function startEngine() {
+            const btn = document.getElementById('processBtn');
+            btn.disabled = true;
+            btn.innerHTML = 'ENGINE RUNNING... <span style="animation: pulse-dot 1s infinite">⚡</span>';
+            updateProgress(5, 'INITIALIZING TARGETS');
+            
+            finalProcessedConfigs = [];
+            updateResults(0);
+
+            try {
+                const rawInput = document.getElementById('mainInput').value.trim();
+                const allowedProtos = new Set(Array.from(document.querySelectorAll('input[name="proto"]:checked')).map(e => e.value));
+                const allowedNets = new Set(Array.from(document.querySelectorAll('input[name="net"]:checked')).map(e => e.value));
+                const remarkTag = document.getElementById('remarkInput').value.trim() || '☬SHΞN™';
+                const maxOut = parseInt(document.getElementById('maxOutput').value) || 2000;
+
+                let targetUrls = [];
+                let rawTextPayload = "";
+
+                if (rawInput) {
+                    const tokens = rawInput.split(/[\s\n]+/).filter(Boolean);
+                    targetUrls = tokens.filter(t => t.startsWith('http://') || t.startsWith('https://'));
+                    rawTextPayload = rawInput;
+                } else {
+                    logTerm('No input detected. Injecting default high-tier sources.', 'scan');
+                    targetUrls = DEFAULT_SOURCES;
+                }
+
+                let combinedData = rawTextPayload;
+                if (targetUrls.length > 0) {
+                    logTerm(`Initiating parallel fetch for ${targetUrls.length} sources...`, 'scan');
+                    
+                    let completed = 0;
+                    const fetchPromises = targetUrls.map(async (url) => {
+                        try {
+                            const data = await fetchWithFallback(url);
+                            logTerm(`Downloaded: ${url.split('/').pop().slice(0, 20)}... (${(data.length/1024).toFixed(1)}kb)`, 'ok');
+                            combinedData += '\n' + data;
+                        } catch (e) {
+                            logTerm(`Failed to route to: ${url}`, 'err');
+                        } finally {
+                            completed++;
+                            updateProgress(10 + Math.floor((completed / targetUrls.length) * 40), 'GATHERING PAYLOADS');
+                        }
+                    });
+                    
+                    await Promise.all(fetchPromises);
+                }
+
+                updateProgress(60, 'EXTRACTING MATRICES');
+                logTerm('Decrypting & extracting V2Ray URIs...', 'scan');
+                
+                await new Promise(r => setTimeout(r, 600)); 
+
+                const extractedURIs = extractURIs(combinedData);
+                logTerm(`Discovered ${extractedURIs.length} raw config sequences.`, 'info');
+
+                updateProgress(75, 'ANALYZING & SCORING');
+                
+                const uniqueMap = new Map();
+                let filterDrops = 0;
+
+                for (const uri of extractedURIs) {
+                    const parsed = scoreConfig(uri);
+                    if (!parsed.valid) continue;
+                    
+                    if (!allowedProtos.has(parsed.meta.proto)) { filterDrops++; continue; }
+                    if (!allowedNets.has(parsed.meta.net)) { filterDrops++; continue; }
+
+                    const existing = uniqueMap.get(parsed.key);
+                    if (!existing || parsed.score > existing.score) {
+                        uniqueMap.set(parsed.key, { uri, score: parsed.score });
+                    }
+                }
+
+                if (filterDrops > 0) logTerm(`Dropped ${filterDrops} configs based on filter constraints.`, 'info');
+
+                updateProgress(90, 'FINALIZING OUTPUT');
+                
+                const sorted = Array.from(uniqueMap.values())
+                                    .sort((a, b) => b.score - a.score)
+                                    .slice(0, maxOut);
+
+                finalProcessedConfigs = sorted.map((item) => {
+                    return applyRemark(item.uri, remarkTag);
+                });
+
+                logTerm(`Engine complete. ${finalProcessedConfigs.length} optimized configs generated.`, 'ok');
+                updateProgress(100, 'OPERATION COMPLETE');
+                updateResults(finalProcessedConfigs.length);
+
+                setTimeout(() => updateProgress(0, 'AWAITING COMMAND'), 2000);
+
+            } catch (error) {
+                logTerm(`Fatal Error: ${error.message}`, 'err');
+                updateProgress(0, 'ERROR DETECTED');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'INITIATE SCAN & RANK';
+            }
+        }
+
+        function updateResults(count) {
+            const display = document.getElementById('finalCount');
+            display.innerText = count;
+            
+            display.classList.remove('bump');
+            void display.offsetWidth; 
+            if (count > 0) display.classList.add('bump');
+
+            const hasData = count > 0;
+            document.getElementById('copyBtn').disabled = !hasData;
+            document.getElementById('dlBtn').disabled = !hasData;
+        }
+
+        function copyConfigs() {
+            if (!finalProcessedConfigs.length) return;
+            const text = finalProcessedConfigs.join('\n');
+            navigator.clipboard.writeText(text).then(() => {
+                logTerm('Payload copied to secure clipboard.', 'ok');
+            }).catch(() => {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                logTerm('Payload copied (fallback mode).', 'ok');
+            });
+        }
+
+        function downloadConfigs() {
+            if (!finalProcessedConfigs.length) return;
+            const text = finalProcessedConfigs.join('\n') + '\n';
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SHEN_Sub_Advanced_${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            logTerm('Payload downloaded successfully.', 'ok');
+        }
+    </script>
+</body>
+</html>
